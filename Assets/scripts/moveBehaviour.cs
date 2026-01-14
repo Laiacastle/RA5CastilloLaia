@@ -4,6 +4,7 @@ public class MoveBehaviour : MonoBehaviour
 {
     [SerializeField] private CharacterController _controller;
     [SerializeField] private Rigidbody _rB;
+    public float gravity = -9.81f;
     void Start()
     {
         if (_controller == null)
@@ -33,5 +34,12 @@ public class MoveBehaviour : MonoBehaviour
 
 
         }
+    }
+
+    public void ApplyGravity(float speed)
+    {
+        Vector3 movement = new Vector3(0f, gravity, 0f);
+        _controller.Move(movement * speed * Time.deltaTime);
+        _rB.transform.position = _controller.transform.position;
     }
 }

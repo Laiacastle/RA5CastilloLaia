@@ -102,5 +102,6 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         _mB.Move(direction, speed);
         _mB.RotateCharacter(direction);
         _aB.Move(direction);
+        _mB.ApplyGravity(_moveSpeed);
     }
 }
