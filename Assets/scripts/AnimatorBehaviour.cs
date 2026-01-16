@@ -29,4 +29,18 @@ public class AnimationBehaviour : MonoBehaviour
         }
         
     }
+
+    public void Aim()
+    {
+        if (_animator.GetBool("aiming"))
+        {
+            _animator.SetBool("aiming", false);
+
+        }
+        else
+        {
+            _animator.SetBool("aiming", true);
+
+        }
+    }
 }

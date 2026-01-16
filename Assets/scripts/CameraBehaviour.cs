@@ -9,11 +9,13 @@ public class CameraBehaviour : MonoBehaviour
     void Awake()
     {
         mixingCamera.ChildCameras[0].enabled = false;
+        mixingCamera.ChildCameras[2].enabled = false;
         _player = GameObject.FindWithTag("Player").GetComponent<Player>();
         mixingCamera = GetComponent<CinemachineMixingCamera>();
         if (_player != null)
         {
             _player.DanceEvent += DanceEvent;
+            _player.AimEvent += AimEvent;
         }
     }
 
@@ -26,6 +28,7 @@ public class CameraBehaviour : MonoBehaviour
     void OnDisable()
     {
         _player.DanceEvent -= DanceEvent;
+        _player.AimEvent -= AimEvent;
     }
 
     public void DanceEvent(bool dancing)
@@ -34,13 +37,33 @@ public class CameraBehaviour : MonoBehaviour
        {
            Debug.Log("Camera: Player started dancing");
            mixingCamera.ChildCameras[0].enabled = true; // Full View Camera
-            mixingCamera.ChildCameras[1].enabled = false;
+           mixingCamera.ChildCameras[1].enabled = false;
+            mixingCamera.ChildCameras[2].enabled = false;
         }
        else
        {
            Debug.Log("Camera: Player stopped dancing");
            mixingCamera.ChildCameras[1].enabled = true; // 3 person View Camera
+           mixingCamera.ChildCameras[0].enabled = false;
+            mixingCamera.ChildCameras[2].enabled = false;
+        }
+    }
+
+    public void AimEvent(bool aiming)
+    {
+        if (aiming)
+        {
+            Debug.Log("Camera: Player started aiming");
+            mixingCamera.ChildCameras[2].enabled = true; // Aim View Camera
+            mixingCamera.ChildCameras[1].enabled = false;
             mixingCamera.ChildCameras[0].enabled = false;
+        }
+        else
+        {
+            Debug.Log("Camera: Player stopped aiming");
+            mixingCamera.ChildCameras[1].enabled = true; // 3 person View Camera
+            mixingCamera.ChildCameras[0].enabled = false;
+            mixingCamera.ChildCameras[2].enabled = false;
         }
     }
 }

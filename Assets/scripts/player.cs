@@ -17,7 +17,9 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     [SerializeField] private MoveBehaviour _mB;
     private Vector3 direction;
     public bool dancing = false;
+    public bool aiming = false;
     public event Action<bool> DanceEvent = delegate { };
+    public event Action<bool> AimEvent = delegate { };
     public void OnAttack(InputAction.CallbackContext context)
     {
         throw new System.NotImplementedException();
@@ -32,6 +34,7 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     {
         if (context.canceled)
         {
+            direction = Vector3.zero;
             _aB.Dance();
             dancing = !dancing;
             
@@ -42,7 +45,13 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Jump input received");
+
+        if (context.canceled)
+        {
+            Debug.Log("Jump action performed");
+            _mB.Jump();
+        }
     }
 
     public void OnLook(InputAction.CallbackContext context)
@@ -103,5 +112,17 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
         _mB.RotateCharacter(direction);
         _aB.Move(direction);
         _mB.ApplyGravity(_moveSpeed);
+    }
+
+    public void OnAim(InputAction.CallbackContext context)
+    {
+        if (context.canceled)
+        {
+            _aB.Aim();
+            aiming = !aiming;
+
+            AimEvent.Invoke(aiming);
+
+        }
     }
 }
