@@ -6,11 +6,10 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 {
-    [SerializeField] private Rigidbody _rb;
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private AnimationBehaviour _aB;
     public float speed = 5f;
-
+    
     [SerializeField] private Vector3 moveInput;
     [SerializeField] private Vector3 moveDirection;
      private InputSystem_Actions inputActions;
@@ -45,13 +44,9 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        Debug.Log("Jump input received");
-
-        if (context.canceled)
-        {
-            Debug.Log("Jump action performed");
-            _mB.Jump();
-        }
+        _aB.Jump();
+        _mB.Jump();
+            
     }
 
     public void OnLook(InputAction.CallbackContext context)
@@ -99,8 +94,6 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
 
     void Start()
     {
-        _rb = GetComponent<Rigidbody>();
-        _rb.freezeRotation = true;
         _mB = GetComponent<MoveBehaviour>();
         _aB = GetComponent<AnimationBehaviour>();
     }
@@ -108,10 +101,11 @@ public class Player : MonoBehaviour, InputSystem_Actions.IPlayerActions
     // Update is called once per frame
     void Update()
     {
+
         _mB.Move(direction, speed);
         _mB.RotateCharacter(direction);
         _aB.Move(direction);
-        _mB.ApplyGravity(_moveSpeed);
+        _mB.ApplyGravity();
     }
 
     public void OnAim(InputAction.CallbackContext context)

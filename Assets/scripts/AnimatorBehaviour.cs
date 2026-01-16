@@ -43,4 +43,9 @@ public class AnimationBehaviour : MonoBehaviour
 
         }
     }
+
+    public void Jump()
+    {
+        _animator.SetTrigger("Jump");
+    }
 }
